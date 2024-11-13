@@ -16,3 +16,4 @@ C:\Users\annie\Documents\GalileoAcademy\Projecten\CapstoneProject\Capstone_Proje
 C:\Users\annie\Documents\GalileoAcademy\Projecten\CapstoneProject\Capstone_Project\bin\Debug\net8.0\MySqlConnector.dll
 C:\Users\annie\Documents\GalileoAcademy\Projecten\CapstoneProject\Capstone_Project\obj\Debug\net8.0\Capstone_Project.csproj.AssemblyReference.cache
 C:\Users\annie\Documents\GalileoAcademy\Projecten\CapstoneProject\Capstone_Project\obj\Debug\net8.0\Capstone.D606AAB6.Up2Date
+C:\Users\annie\Documents\GalileoAcademy\Projecten\CapstoneProject\Capstone_Project\obj\Debug\net8.0\Capstone_Project.sourcelink.json

@@ -5,6 +5,8 @@
 
     class Program
     {
+       
+
         static async Task Main(string[] args)
         {
             // TODO als ik 1 invul wordt deze wel automatisch geupdate in database. Is dit de manier of null?
@@ -33,6 +35,38 @@
             {
                 Console.WriteLine("Geen resultaten");
             }
+
+            //login
+            LoginService _loginService = new LoginService();
+            User? loggedInCustomer = await _loginService.Login("admin");
+
+            if (loggedInCustomer != null){
+            Console.WriteLine($"Logged in Customer: {loggedInCustomer.Role}");
+            } else {
+                Console.WriteLine("Geen gebruikers gevonden.");
+            }
+
+
+            ProductDatabaseService productDatabaseService = new ProductDatabaseService();
+            List<Product> products = await productDatabaseService.GetAllProducts();
+
+            Console.WriteLine($"{products.Count}");
+
+
+            CategoryDatabaseService categorieDatabase = new CategoryDatabaseService();
+
+            List<Category> categories = await categorieDatabase.GetAllCategories();
+
+            foreach (Category c in categories)
+            {
+                Console.WriteLine(c.Name);
+            }
+
+            //TODO add category, werkt nog niet
+            //await categorieDatabase.AddCategory(category);
+
+            //await categorieDatabase.AddCategory(new Category(null,"nieuw", "Dit is een test categorie"));
+    
 
         }
     }

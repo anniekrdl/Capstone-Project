@@ -2,7 +2,9 @@ namespace OnlineWebshop
 {
     public class Customer : User
     {
-        public override string UserName { get; set; }
+      
+       
+
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -12,10 +14,11 @@ namespace OnlineWebshop
         public int Number { get; set; }
         public string City { get; set; }
 
-        public Customer(int? id, string userName, string name, string lastname, string email, string street, int number, string city, string? addition = null)
+        
+
+        public Customer(int? id, string userName, string name, string lastname, string email, string street, int number, string city, string? addition = null) : base(userName, "Customer")
         {
             Id = id;
-            UserName = userName;
             Name = name;
             LastName = lastname;
             Email = email;
@@ -23,7 +26,7 @@ namespace OnlineWebshop
             Number = number;
             Addition = addition;
             City = city;
-            Role = "Customer";
+           
 
         }
 

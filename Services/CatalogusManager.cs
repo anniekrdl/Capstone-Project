@@ -12,21 +12,21 @@ namespace OnlineWebshop
 
         }
 
-        public async Task AddProduct(Product product)
+        public async Task<bool> AddProduct(Product product)
         {
 
 
-            await _productDatabaseService.AddProduct(product);
+            return await _productDatabaseService.AddProduct(product);
         }
 
-        public async Task RemoveProduct(Product product)
+        public async Task<bool> RemoveProduct(Product product)
         {
-            await _productDatabaseService.DeleteProduct(product);
+            return await _productDatabaseService.DeleteProduct(product);
         }
 
-        public async Task EditProduct(Product product)
+        public async Task<bool> EditProduct(Product product)
         {
-            await _productDatabaseService.EditProduct(product);
+            return await _productDatabaseService.EditProduct(product);
         }
 
         public async Task<List<Product>> SearchProductById(int Id)

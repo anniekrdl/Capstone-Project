@@ -35,7 +35,7 @@ namespace OnlineWebshop
 
         }
 
-        public async Task AddProduct(Product product)
+        public async Task<bool> AddProduct(Product product)
         {
 
             try
@@ -55,49 +55,76 @@ namespace OnlineWebshop
                 command.Parameters.AddWithValue("@category_id", product.CategoryId);
 
                 await command.ExecuteNonQueryAsync();
+                return true;
 
             }
             catch
             {
                 Console.WriteLine("product kon niet worden toegevoegd");
+                return false;
 
             }
 
 
         }
 
-        public async Task EditProduct(Product product)
+        public async Task<bool> EditProduct(Product product)
         {
-            using var connection = GetConnection();
-            await connection.OpenAsync();
+            try
+            {
+                using var connection = GetConnection();
+                await connection.OpenAsync();
 
-            using var command = connection.CreateCommand();
+                using var command = connection.CreateCommand();
 
-            command.CommandText = "UPDATE product SET naam = @name, beschrijving = @description, prijs = @price, voorraad = @stock, afbeelding_url = @image_url WHERE product_id = @id";
+                command.CommandText = "UPDATE product SET naam = @name, beschrijving = @description, prijs = @price, voorraad = @stock, afbeelding_url = @image_url WHERE product_id = @id";
 
-            command.Parameters.AddWithValue("@name", product.Name);
-            command.Parameters.AddWithValue("@description", product.Description);
-            command.Parameters.AddWithValue("@price", product.Price);
-            command.Parameters.AddWithValue("@stock", product.Stock);
-            command.Parameters.AddWithValue("@image_url", product.ImageUrl);
-            command.Parameters.AddWithValue("@id", product.Id);
+                command.Parameters.AddWithValue("@name", product.Name);
+                command.Parameters.AddWithValue("@description", product.Description);
+                command.Parameters.AddWithValue("@price", product.Price);
+                command.Parameters.AddWithValue("@stock", product.Stock);
+                command.Parameters.AddWithValue("@image_url", product.ImageUrl);
+                command.Parameters.AddWithValue("@id", product.Id);
 
-            await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine("Error: " + ex.Message);
+                return false;
+
+
+            }
 
         }
 
-        public async Task DeleteProduct(Product product)
+        public async Task<bool> DeleteProduct(Product product)
         {
-            using var connection = GetConnection();
-            await connection.OpenAsync();
+            try
+            {
+                using var connection = GetConnection();
+                await connection.OpenAsync();
 
-            using var command = connection.CreateCommand();
+                using var command = connection.CreateCommand();
 
-            command.CommandText = "DELETE FROM product WHERE product_id = @id";
+                command.CommandText = "DELETE FROM product WHERE product_id = @id";
 
-            command.Parameters.AddWithValue("@id", product.Id);
+                command.Parameters.AddWithValue("@id", product.Id);
 
-            await command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"error: {ex.Message}");
+                return false;
+            }
+
 
         }
 

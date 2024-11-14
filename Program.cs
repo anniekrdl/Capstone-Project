@@ -80,7 +80,18 @@
             CatalogusManager catalogusManager = new CatalogusManager();
 
 
-            //await catalogusManager.AddProduct(product);
+            /*
+            bool isAdded = await catalogusManager.AddProduct(product);
+
+            if (!isAdded)
+            {
+                Console.WriteLine("Product is niet toegevoegd");
+            }
+            else
+            {
+                Console.WriteLine("Product succesvol toegevoegd");
+            }
+            */
 
             //search product
             List<Product> foundProducts = await catalogusManager.SearchProductBySearchterm(product.Name);

@@ -29,10 +29,15 @@ namespace OnlineWebshop
             return await _productDatabaseService.EditProduct(product);
         }
 
-        public async Task<List<Product>> SearchProductById(int Id)
+        public async Task<Product?> GetProductById(int Id)
         {
             var products = await _productDatabaseService.SearchProductById(Id);
-            return products;
+            if (products.Count > 0)
+            {
+                return products[0];
+            }
+            return null;
+
         }
 
         public async Task<List<Product>> SearchProductBySearchterm(string searchterm)

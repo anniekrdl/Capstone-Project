@@ -106,6 +106,26 @@
             //await catalogusManager.RemoveProduct(foundProducts[0]);
 
 
+            // shopping Cart
+            ShoppingCartItem shoppingCartItem = new ShoppingCartItem(null, 1, 2, null, 5);
+
+            ShoppingCart shoppingCart = new ShoppingCart();
+
+            //search item
+            List<ShoppingCartItem> items = await shoppingCart.SearchById(3, catalogusManager);
+
+            //remove
+            //await shoppingCart.RemoveShoppingCartItem(items[0]);
+
+            //
+            List<ShoppingCartItem> itemsFound = await shoppingCart.GetAllItemsById(1, catalogusManager);
+
+            foreach (ShoppingCartItem p in itemsFound)
+            {
+                Console.WriteLine(p.Product.ProductDetailsToString());
+            }
+
+
 
         }
     }

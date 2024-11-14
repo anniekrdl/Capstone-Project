@@ -3,7 +3,7 @@ namespace OnlineWebshop
     class CustomerManager
     {
 
-        private DatabaseService _databaseService = new DatabaseService();
+        private CustomerDatabaseService _databaseService = new CustomerDatabaseService();
 
         public async Task<List<Customer>> GetCustomers()
         {

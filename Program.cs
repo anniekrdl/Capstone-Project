@@ -5,7 +5,7 @@
 
     class Program
     {
-       
+
 
         static async Task Main(string[] args)
         {
@@ -40,9 +40,12 @@
             LoginService _loginService = new LoginService();
             User? loggedInCustomer = await _loginService.Login("admin");
 
-            if (loggedInCustomer != null){
-            Console.WriteLine($"Logged in Customer: {loggedInCustomer.Role}");
-            } else {
+            if (loggedInCustomer != null)
+            {
+                Console.WriteLine($"Logged in Customer: {loggedInCustomer.Role}");
+            }
+            else
+            {
                 Console.WriteLine("Geen gebruikers gevonden.");
             }
 
@@ -55,18 +58,43 @@
 
             CategoryDatabaseService categorieDatabase = new CategoryDatabaseService();
 
+            //list all categories
             List<Category> categories = await categorieDatabase.GetAllCategories();
 
-            foreach (Category c in categories)
-            {
-                Console.WriteLine(c.Name);
-            }
 
-            //TODO add category, werkt nog niet
+            //add category
+            //Category category = new Category(null, "Nieuwe category", "Dit is een Test Categorie");
             //await categorieDatabase.AddCategory(category);
 
-            //await categorieDatabase.AddCategory(new Category(null,"nieuw", "Dit is een test categorie"));
-    
+            //search category
+            //List<Category> categoriesFound = await categorieDatabase.SearchCategory(category.Name.ToString());
+
+            //remove category
+            //await categorieDatabase.RemoveCategory(categoriesFound[0]);
+
+
+
+            //CatalogusManager
+            //add product
+            Product product = new Product(null, "Product", "beschrijving", 123, 3, 1, "image.com");
+            CatalogusManager catalogusManager = new CatalogusManager();
+
+
+            //await catalogusManager.AddProduct(product);
+
+            //search product
+            List<Product> foundProducts = await catalogusManager.SearchProductBySearchterm(product.Name);
+
+            foreach (Product p in foundProducts)
+            {
+                Console.WriteLine($"name: {p.Name} {p.Description}. id: {p.Id}");
+
+            }
+
+            //remove product
+            //await catalogusManager.RemoveProduct(foundProducts[0]);
+
+
 
         }
     }

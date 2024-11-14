@@ -1,23 +1,19 @@
 using MySqlConnector;
 
-namespace OnlineWebshop{
+namespace OnlineWebshop
+{
 
-    public class CategoryDatabaseService {
-         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
+    public class CategoryDatabaseService : DatabaseService
+    {
+
+
+
+        public async Task<List<Category>> GetAllCategories()
         {
-            Server = "localhost",
-            Port = 3306,
-            UserID = "root",
-            Password = "Delcroktam6",
-            Database = "capstoneproject",
-        };
 
-
-        public async Task<List<Category>> GetAllCategories(){
-            
             List<Category> categories = new List<Category>();
 
-            using var connection = new MySqlConnection(builder.ConnectionString);
+            using var connection = GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -29,16 +25,16 @@ namespace OnlineWebshop{
             {
 
                 Category category = new Category(
-                    reader.GetInt32("categorie_id"), 
-                    reader.GetString("naam"), 
+                    reader.GetInt32("categorie_id"),
+                    reader.GetString("naam"),
                     reader.GetString("beschrijving")
 
                 );
 
                 categories.Add(category);
 
-               
-    
+
+
             }
 
             return categories;
@@ -47,18 +43,67 @@ namespace OnlineWebshop{
 
         public async Task AddCategory(Category category)
         {
-            using var connection = new MySqlConnection(builder.ConnectionString);
+            using var connection = GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
-            command.CommandText = @"INSERT INTO categorie (naam, beschrijving) VALUES (@name @description);";
+            command.CommandText = @"INSERT INTO categorie (naam, beschrijving) VALUES (@name, @description);";
 
             command.Parameters.AddWithValue("@name", category.Name);
-            command.Parameters.AddWithValue("@beschrijving", category.Description);
+            command.Parameters.AddWithValue("@description", category.Description);
 
             await command.ExecuteNonQueryAsync();
         }
 
-        
+        public async Task RemoveCategory(Category category)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"DELETE FROM categorie WHERE categorie_id = @id";
+
+            Console.WriteLine($"de id is {category.Id}");
+
+
+            command.Parameters.AddWithValue("@id", category.Id);
+
+            await command.ExecuteNonQueryAsync();
+
+        }
+
+        public async Task<List<Category>> SearchCategory(string searchTerm)
+        {
+
+            List<Category> categories = new List<Category>();
+
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+            command.CommandText = @"SELECT * FROM categorie WHERE naam LIKE CONCAT('%', @searchTerm, '%')";
+
+            command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+            using var reader = await command.ExecuteReaderAsync();
+
+            while (reader.Read())
+            {
+                var category = new Category(
+                    reader.GetInt32("categorie_id"),
+                    reader.GetString("naam"),
+                    reader.GetString("beschrijving")
+                );
+
+                categories.Add(category);
+
+            }
+
+            return categories;
+
+        }
+
+
+
     }
 }

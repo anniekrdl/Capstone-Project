@@ -1,20 +1,16 @@
+using System.Data.Common;
 using MySqlConnector;
 
-namespace OnlineWebshop{
+namespace OnlineWebshop
+{
 
-    public class ProductDatabaseService {
-         MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder
+    public class ProductDatabaseService : DatabaseService
+    {
+
+
+        public async Task<List<Product>> GetAllProducts()
         {
-            Server = "localhost",
-            Port = 3306,
-            UserID = "root",
-            Password = "Delcroktam6",
-            Database = "capstoneproject",
-        };
-
-
-        public async Task<List<Product>> GetAllProducts(){
-           using var connection = new MySqlConnection(builder.ConnectionString);
+            using var connection = GetConnection();
             await connection.OpenAsync();
             var query = "SELECT * FROM product";
             var command = new MySqlCommand(query, connection);
@@ -22,15 +18,15 @@ namespace OnlineWebshop{
             var products = new List<Product>();
             while (await reader.ReadAsync())
             {
-               products.Add(new Product(
-                reader.GetInt32("product_id"),    
-                reader.GetString("naam"),         
-                reader.GetString("beschrijving"), 
-                reader.GetInt32("prijs"),         
-                reader.GetInt32("voorraad"),     
-                reader.GetInt32("categorie_id"),  
-                reader.GetString("afbeelding_url")
-                ));
+                products.Add(new Product(
+                 reader.GetInt32("product_id"),
+                 reader.GetString("naam"),
+                 reader.GetString("beschrijving"),
+                 reader.GetInt32("prijs"),
+                 reader.GetInt32("voorraad"),
+                 reader.GetInt32("categorie_id"),
+                 reader.GetString("afbeelding_url")
+                 ));
 
 
             }
@@ -38,6 +34,140 @@ namespace OnlineWebshop{
             return products;
 
         }
-        
+
+        public async Task AddProduct(Product product)
+        {
+
+            try
+            {
+                using var connection = GetConnection();
+                await connection.OpenAsync();
+
+                using var command = connection.CreateCommand();
+
+                command.CommandText = "INSERT INTO product (naam, beschrijving,categorie_id, prijs, voorraad, afbeelding_url) VALUES (@name, @description,@category_id, @price, @stock, @image_url)";
+
+                command.Parameters.AddWithValue("@name", product.Name);
+                command.Parameters.AddWithValue("@description", product.Description);
+                command.Parameters.AddWithValue("@price", product.Price);
+                command.Parameters.AddWithValue("@stock", product.Stock);
+                command.Parameters.AddWithValue("@image_url", product.ImageUrl);
+                command.Parameters.AddWithValue("@category_id", product.CategoryId);
+
+                await command.ExecuteNonQueryAsync();
+
+            }
+            catch
+            {
+                Console.WriteLine("product kon niet worden toegevoegd");
+
+            }
+
+
+        }
+
+        public async Task EditProduct(Product product)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText = "UPDATE product SET naam = @name, beschrijving = @description, prijs = @price, voorraad = @stock, afbeelding_url = @image_url WHERE product_id = @id";
+
+            command.Parameters.AddWithValue("@name", product.Name);
+            command.Parameters.AddWithValue("@description", product.Description);
+            command.Parameters.AddWithValue("@price", product.Price);
+            command.Parameters.AddWithValue("@stock", product.Stock);
+            command.Parameters.AddWithValue("@image_url", product.ImageUrl);
+            command.Parameters.AddWithValue("@id", product.Id);
+
+            await command.ExecuteNonQueryAsync();
+
+        }
+
+        public async Task DeleteProduct(Product product)
+        {
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText = "DELETE FROM product WHERE product_id = @id";
+
+            command.Parameters.AddWithValue("@id", product.Id);
+
+            await command.ExecuteNonQueryAsync();
+
+        }
+
+        public async Task<List<Product>> SearchProductById(int Id)
+        {
+            List<Product> products = new List<Product>();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText = "SELECT * FROM product WHERE product_id = @id";
+
+            command.Parameters.AddWithValue("@id", Id);
+
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var product = new Product(
+                    reader.GetInt32("product_id"),
+                    reader.GetString("naam"),
+                    reader.GetString("beschrijving"),
+                    reader.GetInt32("prijs"),
+                    reader.GetInt32("voorraad"),
+                    reader.GetInt32("categorie_id"),
+                    reader.GetString("afbeelding_url")
+                );
+
+                products.Add(product);
+            }
+
+            return products;
+
+
+        }
+
+        public async Task<List<Product>> SearchProductBySearchTerm(string searchTerm)
+        {
+            List<Product> products = new List<Product>();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText = "SELECT * FROM product WHERE naam LIKE CONCAT('%', @searchTerm, '%')";
+
+            command.Parameters.AddWithValue("@searchTerm", searchTerm);
+
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var product = new Product(
+                    reader.GetInt32("product_id"),
+                    reader.GetString("naam"),
+                    reader.GetString("beschrijving"),
+                    reader.GetInt32("prijs"),
+                    reader.GetInt32("voorraad"),
+                    reader.GetInt32("categorie_id"),
+                    reader.GetString("afbeelding_url")
+                );
+
+                products.Add(product);
+            }
+
+            return products;
+
+
+        }
+
     }
 }

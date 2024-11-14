@@ -3,7 +3,7 @@ namespace OnlineWebshop
 
     public class LoginService()
     {
-        DatabaseService _databaseService = new DatabaseService();
+        CustomerDatabaseService _databaseService = new CustomerDatabaseService();
 
         public async Task<User?> Login(string UserName)
         {
@@ -14,20 +14,24 @@ namespace OnlineWebshop
             if (UserName == "admin")
             {
                 // administrator
-               Administrator admin = new Administrator();
-               return admin;
-              
+                Administrator admin = new Administrator();
+                return admin;
+
             }
 
             List<Customer> user = await _databaseService.SearchCustomer(UserName);
-            if (user.Count > 0){
+            if (user.Count > 0)
+            {
                 return user[0];
             }
             else
             {
                 return null;
             }
-            
+
+
+
+
 
 
         }

@@ -1,4 +1,4 @@
-namespace OnlineWebshop
+namespace Capstone_Project.Models
 {
 
     public abstract class User
@@ -10,10 +10,29 @@ namespace OnlineWebshop
         // id op null of -1
         public virtual int? Id { get; protected set; } = null;
 
-        public User(string userName, string role){
+        public User(string userName, string role)
+        {
             UserName = userName;
             Role = role;
         }
 
+        public bool IsAdmin()
+        {
+            return Role.Equals("Administrator");
+
+        }
+
+        public int GetId()
+        {
+            if (Id == null)
+            {
+                throw new InvalidOperationException("Trying to get ID for user when ID is null!");
+            }
+
+            return Id.Value;
+        }
+
     }
+
+
 }

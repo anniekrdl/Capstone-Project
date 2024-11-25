@@ -24,12 +24,6 @@ namespace OnlineWebshop
         }
 
 
-        public string ProductDetailsToString()
-        {
-            return $"Product Id: {Id}, Name: {Name}, Description: {Description}, Price: {Price}, Stock: {Stock}, Category: {CategoryId}, ImageUrl: {ImageUrl}";
-        }
-
-
     }
 
 }

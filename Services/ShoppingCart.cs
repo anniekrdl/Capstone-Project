@@ -17,6 +17,8 @@ namespace OnlineWebshop
             }
         }
 
+
+        //WORDT NIET MEER GEBRUIKT ??  
         public async Task<bool> RemoveShoppingCartItem(ShoppingCartItem shoppingCartItem)
         {
             try
@@ -30,7 +32,28 @@ namespace OnlineWebshop
             }
         }
 
-        public async Task<List<ShoppingCartItem>> GetAllItemsById(int id, CatalogusManager catalogusManager)
+        public async Task<bool> EmptyShoppingCart(List<ShoppingCartItem> items)
+        {
+
+            try
+            {
+                foreach (ShoppingCartItem item in items)
+                {
+                    await _cartDatabaseService.RemoveShoppingCartItem(item);
+
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+        }
+
+        public async Task<List<ShoppingCartItem>> GetAllItemsByCustomerId(int id, CatalogusManager catalogusManager)
         {
 
 
@@ -55,6 +78,53 @@ namespace OnlineWebshop
             }
 
             return shoppingCartItems;
+
+        }
+
+
+        public async Task<List<SelectedProductItem>> GetSelectedProductItemList(int customerId, CatalogusManager catalogusManager)
+        {
+
+            // get all shoppingCartItems
+            List<ShoppingCartItem> items = await GetAllItemsByCustomerId(customerId, catalogusManager);
+
+
+            List<SelectedProductItem> orderItems = items.Select(item =>
+            new SelectedProductItem(
+                null,
+                item.ProductId,
+                item.Product,
+                item.NumberOfItems)
+            ).ToList();
+
+            return orderItems;
+
+
+        }
+
+        public void ShowShoppingCartItems(List<ShoppingCartItem> items)
+        {
+
+            Console.WriteLine(@"
+            
+            Productoverzicht:
+
+             ID  | Productnaam         | Prijs        | Aantal      | TotaalPrijs
+            --------------------------------------------------------");
+            //List<Product> products = await GetAllProducts();
+            foreach (ShoppingCartItem p in items)
+            {
+                string productName = p.Product.Name.PadRight(20);
+                string productId = p.Id.ToString().PadRight(4);
+                string productPrice = (p.Product.Price / 100.00).ToString().PadRight(12);
+                string numberOfItems = p.NumberOfItems.ToString().PadRight(12);
+                string totalPrice = (p.NumberOfItems * (p.Product.Price / 100.00)).ToString().PadRight(12);
+
+
+                Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {numberOfItems}|€{totalPrice}");
+
+            }
+
 
         }
 

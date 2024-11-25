@@ -1,20 +1,13 @@
 namespace OnlineWebshop
 {
-    class ShoppingCartItem
+    class ShoppingCartItem : SelectedProductItem
     {
-        public int? Id { get; set; }
-        public int CustomerId { get; set; }
-        public int ProductId { get; set; }
-        public Product? Product { get; set; }
-        public int NumberOfItems { get; set; }
 
-        public ShoppingCartItem(int? id, int customerId, int productId, Product? product, int numberOfItems)
+        public int CustomerId { get; private set; }
+
+        public ShoppingCartItem(int? id, int customerId, int productId, Product? product, int numberOfItems) : base(id, productId, product, numberOfItems)
         {
-            Id = id;
             CustomerId = customerId;
-            ProductId = productId;
-            NumberOfItems = numberOfItems;
-            Product = product;
 
         }
 

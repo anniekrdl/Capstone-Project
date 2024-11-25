@@ -27,6 +27,29 @@ namespace OnlineWebshop
             return await _categoryDatabaseService.SearchCategory(searchTerm);
         }
 
+        public async Task ShowAllCategories()
+        {
+            Console.WriteLine(@"
+            
+            Categorieën:
+
+             ID  | Categorienaam       | Beschrijving       
+            ------------------------------------------------");
+            List<Category> categories = await _categoryDatabaseService.GetAllCategories();
+
+            foreach (Category category in categories)
+            {
+                string name = category.Name.PadRight(20);
+                string id = category.Id.ToString().PadRight(4);
+                string description = category.Description.Length > 40 ? category.Description.Substring(0, 40) + "..." : category.Description; // Truncate the description if it's too long
+
+                Console.WriteLine($@"
+                {id}| {name}|{description}");
+            }
+
+
+        }
+
     }
 
 }

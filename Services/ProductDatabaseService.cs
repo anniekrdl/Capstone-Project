@@ -102,7 +102,7 @@ namespace OnlineWebshop
 
         }
 
-        public async Task<bool> DeleteProduct(Product product)
+        public async Task<bool> DeleteProduct(int product_id)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace OnlineWebshop
 
                 command.CommandText = "DELETE FROM product WHERE product_id = @id";
 
-                command.Parameters.AddWithValue("@id", product.Id);
+                command.Parameters.AddWithValue("@id", product_id);
 
                 await command.ExecuteNonQueryAsync();
                 return true;

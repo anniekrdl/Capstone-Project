@@ -1,3 +1,5 @@
+using Capstone_Project.Models;
+
 namespace OnlineWebshop
 {
 
@@ -28,10 +30,6 @@ namespace OnlineWebshop
             {
                 return null;
             }
-
-
-
-
 
 
         }

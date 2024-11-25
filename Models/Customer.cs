@@ -1,3 +1,5 @@
+using Capstone_Project.Models;
+
 namespace OnlineWebshop
 {
     public class Customer : User

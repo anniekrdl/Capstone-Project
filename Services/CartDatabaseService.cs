@@ -109,6 +109,8 @@ namespace OnlineWebshop
                     reader.GetInt32("aantal")
                 );
 
+
+
                 shoppingCartItems.Add(shoppingCartItem);
             }
 

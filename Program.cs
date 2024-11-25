@@ -9,6 +9,7 @@
 
         static async Task Main(string[] args)
         {
+            /*
             // TODO als ik 1 invul wordt deze wel automatisch geupdate in database. Is dit de manier of null?
             Customer customer = new Customer(null, "nieuw", "name", "lastname", "email@mail", "street", 34, "City");
 
@@ -80,7 +81,7 @@
             CatalogusManager catalogusManager = new CatalogusManager();
 
 
-            /*
+            
             bool isAdded = await catalogusManager.AddProduct(product);
 
             if (!isAdded)
@@ -91,7 +92,7 @@
             {
                 Console.WriteLine("Product succesvol toegevoegd");
             }
-            */
+            
 
             //search product
             List<Product> foundProducts = await catalogusManager.SearchProductBySearchterm(product.Name);
@@ -118,12 +119,80 @@
             //await shoppingCart.RemoveShoppingCartItem(items[0]);
 
             //
-            List<ShoppingCartItem> itemsFound = await shoppingCart.GetAllItemsById(1, catalogusManager);
+            List<ShoppingCartItem> itemsFound = await shoppingCart.GetAllItemsByCustomerId(1, catalogusManager);
 
             foreach (ShoppingCartItem p in itemsFound)
             {
-                Console.WriteLine(p.Product.ProductDetailsToString());
+
+                //Console.WriteLine(p.Product.ProductDetailsToString());
             }
+
+
+            //ORDERS
+            //Order order = new Order(
+            //    null, 2, null, OrderStatus.GEWEIGERD
+            //);
+
+
+
+            OrderManager orderManager = new OrderManager();
+            //await orderManager.AddOrder(order);
+
+            Order? foundOrder = await orderManager.GetOrderById(3);
+
+
+            if (foundOrder != null)
+            {
+                Console.WriteLine(foundOrder.Id);
+                foundOrder.UpdateOrderStatus(OrderStatus.AFGEROND);
+                Console.WriteLine(foundOrder.OrderStatus);
+                await orderManager.UpdateOrder(foundOrder);
+
+            }
+
+
+            //OrderItem
+
+            //Add item
+            SelectedProductItem item = new SelectedProductItem(null, 2, product, 4);
+
+            //await orderManager.AddOrderItem(1, item);
+
+            //search item
+            OrderItem orderItem = await orderManager.GetOrderItemById(6);
+
+            orderItem.NumberOfItems = 8;
+
+            //update item
+            await orderManager.UpdateOrderItem(orderItem);
+
+
+            // shopping list to order
+            List<SelectedProductItem> itemsSelected = await shoppingCart.GetSelectedProductItemList(1, catalogusManager);
+
+            //
+            await orderManager.AddOrderItem(1, itemsSelected[0]);
+            */
+
+            UI uI = new UI();
+
+            await uI.StartWebshop();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

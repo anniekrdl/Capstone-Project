@@ -12,7 +12,6 @@ namespace OnlineWebshop
 
         }
 
-
         //add customer to database
         public async Task AddCustomer(Customer customer)
         {

@@ -244,8 +244,12 @@ namespace OnlineWebshop
                 case 2:
                     // show product
                     int Id = GetUserInputInt("Wat is de Id van het product dat je wilt bekijken? ");
-                    Product product = await _catalogusManager.GetProductById(Id);
-                    _catalogusManager.ShowProduct(product);
+                    Product? product = await _catalogusManager.GetProductById(Id);
+                    if (product != null)
+                    {
+                        _catalogusManager.ShowProduct(product);
+                    }
+
 
 
                     break;
@@ -269,7 +273,7 @@ namespace OnlineWebshop
                 case 1:
                     //accept
                     int choice = GetUserInputInt("Wat is de id van de order dat u wilt accepteren? ");
-                    Order order = await _orderManager.GetOrderById(choice);
+                    Order? order = await _orderManager.GetOrderById(choice);
                     if (order != null)
                     {
                         Order newOrder = new Order(order.Id, order.CustomerId, order.Date, OrderStatus.GEACCEPTEERD);
@@ -279,7 +283,7 @@ namespace OnlineWebshop
                 case 2:
                     //denied
                     int c1 = GetUserInputInt("Wat is de id van de order dat u wilt weigeren? ");
-                    Order order1 = await _orderManager.GetOrderById(c1);
+                    Order? order1 = await _orderManager.GetOrderById(c1);
                     if (order1 != null)
                     {
                         Order newOrder = new Order(order1.Id, order1.CustomerId, order1.Date, OrderStatus.GEWEIGERD);
@@ -289,7 +293,7 @@ namespace OnlineWebshop
                 case 3:
                     //close order
                     int c2 = GetUserInputInt("Wat is de id van de order dat u wilt afronden? ");
-                    Order order2 = await _orderManager.GetOrderById(c2);
+                    Order? order2 = await _orderManager.GetOrderById(c2);
                     if (order2 != null)
                     {
                         Order newOrder = new Order(order2.Id, order2.CustomerId, order2.Date, OrderStatus.AFGEROND);

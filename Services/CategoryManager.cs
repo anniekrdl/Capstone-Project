@@ -41,7 +41,7 @@ namespace OnlineWebshop
             {
                 string name = category.Name.PadRight(20);
                 string id = category.Id.ToString().PadRight(4);
-                string description = category.Description.Length > 40 ? category.Description.Substring(0, 40) + "..." : category.Description; // Truncate the description if it's too long
+                string description = category.Description.Length > 40 ? category.Description.Substring(0, 40) + "..." : category.Description; // if length > 40 dan substring anders hele description.
 
                 Console.WriteLine($@"
                 {id}| {name}|{description}");

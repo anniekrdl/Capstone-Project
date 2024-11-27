@@ -17,8 +17,6 @@ namespace OnlineWebshop
             }
         }
 
-
-        //WORDT NIET MEER GEBRUIKT ??  
         public async Task<bool> RemoveShoppingCartItem(ShoppingCartItem shoppingCartItem)
         {
             try
@@ -114,14 +112,19 @@ namespace OnlineWebshop
             //List<Product> products = await GetAllProducts();
             foreach (ShoppingCartItem p in items)
             {
-                string productName = p.Product.Name.PadRight(20);
-                string productId = p.Id.ToString().PadRight(4);
-                string productPrice = (p.Product.Price / 100.00).ToString().PadRight(12);
-                string numberOfItems = p.NumberOfItems.ToString().PadRight(12);
-                string totalPrice = (p.NumberOfItems * (p.Product.Price / 100.00)).ToString().PadRight(12);
+                if (p.Product != null)
+                {
+                    string productName = p.Product.Name.PadRight(20);
+                    string productId = p.Id.ToString().PadRight(4);
+                    string productPrice = (p.Product.Price / 100.00).ToString().PadRight(12);
+                    string numberOfItems = p.NumberOfItems.ToString().PadRight(12);
+                    string totalPrice = (p.NumberOfItems * (p.Product.Price / 100.00)).ToString().PadRight(12);
 
 
-                Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {numberOfItems}|€{totalPrice}");
+                    Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {numberOfItems}|€{totalPrice}");
+
+                }
+
 
             }
 

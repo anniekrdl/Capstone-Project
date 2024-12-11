@@ -8,12 +8,14 @@
     ".NETCoreApp,Version=v8.0": {
       "Capstone_Project/1.0.0": {
         "dependencies": {
+          "Microsoft.CodeAnalysis.Metrics": "4.0.0-beta1.24508.2",
           "MySqlConnector": "2.3.7"
         },
         "runtime": {
           "Capstone_Project.dll": {}
         }
       },
+      "Microsoft.CodeAnalysis.Metrics/4.0.0-beta1.24508.2": {},
       "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
         "runtime": {
           "lib/net7.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -40,6 +42,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Microsoft.CodeAnalysis.Metrics/4.0.0-beta1.24508.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TzHZhEJpq0IQJEAFbiCTH7MhkyimyA9CGJkBksRAO3Fw1XAmR0AtwYmEQUqiL8eBwD/cFCe6ctRFCAtr/+t+uQ==",
+      "path": "microsoft.codeanalysis.metrics/4.0.0-beta1.24508.2",
+      "hashPath": "microsoft.codeanalysis.metrics.4.0.0-beta1.24508.2.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
       "type": "package",

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hzbXqJJxQLg=",
+  "dgSpecHash": "lbpUgakJAaY=",
   "success": true,
   "projectFilePath": "C:\\Users\\annie\\Documents\\GalileoAcademy\\Projecten\\CapstoneProject\\Capstone_Project\\Capstone_Project.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\annie\\.nuget\\packages\\microsoft.codeanalysis.metrics\\4.0.0-beta1.24508.2\\microsoft.codeanalysis.metrics.4.0.0-beta1.24508.2.nupkg.sha512",
     "C:\\Users\\annie\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.1\\microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
     "C:\\Users\\annie\\.nuget\\packages\\mysqlconnector\\2.3.7\\mysqlconnector.2.3.7.nupkg.sha512"
   ],

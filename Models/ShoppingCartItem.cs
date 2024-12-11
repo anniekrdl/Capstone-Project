@@ -11,9 +11,5 @@ namespace OnlineWebshop
 
         }
 
-        public void ShowCartItem()
-        {
-            Console.WriteLine($"Shopping Cart with id {Id}. CustomerId = {CustomerId}, ProductId = {ProductId}, Number of product = {NumberOfItems}");
-        }
     }
 }

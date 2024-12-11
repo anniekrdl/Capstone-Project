@@ -4,8 +4,6 @@ namespace OnlineWebshop
 {
     public class Customer : User
     {
-      
-       
 
         public string Name { get; set; }
         public string LastName { get; set; }
@@ -16,7 +14,7 @@ namespace OnlineWebshop
         public int Number { get; set; }
         public string City { get; set; }
 
-        
+
 
         public Customer(int? id, string userName, string name, string lastname, string email, string street, int number, string city, string? addition = null) : base(userName, "Customer")
         {
@@ -28,7 +26,7 @@ namespace OnlineWebshop
             Number = number;
             Addition = addition;
             City = city;
-           
+
 
         }
 

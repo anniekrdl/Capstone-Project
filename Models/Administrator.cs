@@ -7,10 +7,7 @@ namespace OnlineWebshop
     {
         // ipv 
         public Administrator() : base("admin", "Administrator") 
-        {
-
-          
-        }
+        {}
     }
     
 }

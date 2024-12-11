@@ -1,6 +1,6 @@
 namespace OnlineWebshop
 {
-    class SelectedProductItem
+    abstract class SelectedProductItem
     {
         public int? Id { get; set; }
         public int ProductId { get; set; }

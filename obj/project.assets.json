@@ -2,6 +2,12 @@
   "version": 3,
   "targets": {
     "net8.0": {
+      "Microsoft.CodeAnalysis.Metrics/4.0.0-beta1.24508.2": {
+        "type": "package",
+        "build": {
+          "buildTransitive/Microsoft.CodeAnalysis.Metrics.targets": {}
+        }
+      },
       "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
         "type": "package",
         "compile": {
@@ -37,6 +43,93 @@
     }
   },
   "libraries": {
+    "Microsoft.CodeAnalysis.Metrics/4.0.0-beta1.24508.2": {
+      "sha512": "TzHZhEJpq0IQJEAFbiCTH7MhkyimyA9CGJkBksRAO3Fw1XAmR0AtwYmEQUqiL8eBwD/cFCe6ctRFCAtr/+t+uQ==",
+      "type": "package",
+      "path": "microsoft.codeanalysis.metrics/4.0.0-beta1.24508.2",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "Metrics.Legacy/Metrics.Legacy.exe",
+        "Metrics.Legacy/Metrics.Legacy.exe.config",
+        "Metrics.Legacy/Metrics.Legacy.xml",
+        "Metrics.Legacy/Microsoft.Bcl.AsyncInterfaces.dll",
+        "Metrics.Legacy/Microsoft.Build.Locator.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.AnalyzerUtilities.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.CSharp.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Scripting.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.Features.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.Workspaces.dll",
+        "Metrics.Legacy/Microsoft.CodeAnalysis.dll",
+        "Metrics.Legacy/Microsoft.DiaSymReader.dll",
+        "Metrics.Legacy/System.Buffers.dll",
+        "Metrics.Legacy/System.Collections.Immutable.dll",
+        "Metrics.Legacy/System.Composition.AttributedModel.dll",
+        "Metrics.Legacy/System.Composition.Convention.dll",
+        "Metrics.Legacy/System.Composition.Hosting.dll",
+        "Metrics.Legacy/System.Composition.Runtime.dll",
+        "Metrics.Legacy/System.Composition.TypedParts.dll",
+        "Metrics.Legacy/System.IO.Pipelines.dll",
+        "Metrics.Legacy/System.Memory.dll",
+        "Metrics.Legacy/System.Numerics.Vectors.dll",
+        "Metrics.Legacy/System.Reflection.Metadata.dll",
+        "Metrics.Legacy/System.Runtime.CompilerServices.Unsafe.dll",
+        "Metrics.Legacy/System.Text.Encoding.CodePages.dll",
+        "Metrics.Legacy/System.Text.Encodings.Web.dll",
+        "Metrics.Legacy/System.Text.Json.dll",
+        "Metrics.Legacy/System.Threading.Tasks.Extensions.dll",
+        "Metrics.Legacy/System.ValueTuple.dll",
+        "Metrics/Metrics.exe",
+        "Metrics/Metrics.exe.config",
+        "Metrics/Metrics.xml",
+        "Metrics/Microsoft.Bcl.AsyncInterfaces.dll",
+        "Metrics/Microsoft.Build.Locator.dll",
+        "Metrics/Microsoft.CodeAnalysis.AnalyzerUtilities.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.CSharp.dll",
+        "Metrics/Microsoft.CodeAnalysis.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.Scripting.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.Features.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.VisualBasic.dll",
+        "Metrics/Microsoft.CodeAnalysis.Workspaces.MSBuild.dll",
+        "Metrics/Microsoft.CodeAnalysis.Workspaces.dll",
+        "Metrics/Microsoft.CodeAnalysis.dll",
+        "Metrics/Microsoft.DiaSymReader.dll",
+        "Metrics/System.Buffers.dll",
+        "Metrics/System.Collections.Immutable.dll",
+        "Metrics/System.Composition.AttributedModel.dll",
+        "Metrics/System.Composition.Convention.dll",
+        "Metrics/System.Composition.Hosting.dll",
+        "Metrics/System.Composition.Runtime.dll",
+        "Metrics/System.Composition.TypedParts.dll",
+        "Metrics/System.IO.Pipelines.dll",
+        "Metrics/System.Memory.dll",
+        "Metrics/System.Numerics.Vectors.dll",
+        "Metrics/System.Reflection.Metadata.dll",
+        "Metrics/System.Runtime.CompilerServices.Unsafe.dll",
+        "Metrics/System.Text.Encoding.CodePages.dll",
+        "Metrics/System.Text.Encodings.Web.dll",
+        "Metrics/System.Text.Json.dll",
+        "Metrics/System.Threading.Tasks.Extensions.dll",
+        "Metrics/System.ValueTuple.dll",
+        "ThirdPartyNotices.txt",
+        "buildTransitive/Microsoft.CodeAnalysis.Metrics.targets",
+        "microsoft.codeanalysis.metrics.4.0.0-beta1.24508.2.nupkg.sha512",
+        "microsoft.codeanalysis.metrics.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
     "Microsoft.Extensions.Logging.Abstractions/7.0.1": {
       "sha512": "pkeBFx0vqMW/A3aUVHh7MPu3WkBhaVlezhSZeb1c9XD0vUReYH1TLFSy5MxJgZfmz5LZzYoErMorlYZiwpOoNA==",
       "type": "package",
@@ -139,6 +232,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "Microsoft.CodeAnalysis.Metrics >= 4.0.0-beta1.24508.2",
       "MySqlConnector >= 2.3.7"
     ]
   },
@@ -193,6 +287,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "Microsoft.CodeAnalysis.Metrics": {
+            "target": "Package",
+            "version": "[4.0.0-beta1.24508.2, )"
+          },
           "MySqlConnector": {
             "target": "Package",
             "version": "[2.3.7, )"

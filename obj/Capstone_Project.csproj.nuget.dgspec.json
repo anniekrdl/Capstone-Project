@@ -51,6 +51,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.CodeAnalysis.Metrics": {
+              "target": "Package",
+              "version": "[4.0.0-beta1.24508.2, )"
+            },
             "MySqlConnector": {
               "target": "Package",
               "version": "[2.3.7, )"

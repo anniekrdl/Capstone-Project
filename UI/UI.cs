@@ -81,6 +81,7 @@ namespace OnlineWebshop
             switch (choiceNum)
             {
                 case 1:
+                    //Verantwoordelijkheiden: producten ophalen, producten showen en nieuw menu showen.
                     //show catalogus'
                     List<Product> products = await _catalogusManager.GetAllProducts();
                     _catalogusManager.ShowProducts(products);

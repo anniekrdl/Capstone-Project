@@ -86,7 +86,7 @@ namespace OnlineWebshop
             // get all shoppingCartItems
             List<ShoppingCartItem> items = await GetAllItemsByCustomerId(customerId, catalogusManager);
 
-
+            
             List<SelectedProductItem> orderItems = items.Select(item =>
             new SelectedProductItem(
                 null,

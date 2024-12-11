@@ -12,7 +12,7 @@ namespace OnlineWebshop
             Server = "localhost",
             Port = 3306,
             UserID = "root",
-            Password = "[Password]",
+            Password = "Delcroktam6",
             Database = "capstoneproject",
         };
 

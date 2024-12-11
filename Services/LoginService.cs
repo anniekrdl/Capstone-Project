@@ -1,4 +1,3 @@
-using Capstone_Project.Models;
 
 namespace OnlineWebshop
 {

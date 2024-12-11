@@ -1,4 +1,4 @@
-namespace Capstone_Project.Models
+namespace OnlineWebshop
 {
 
     public abstract class User

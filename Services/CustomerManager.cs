@@ -1,6 +1,6 @@
 namespace OnlineWebshop
 {
-    class CustomerManager
+    class CustomerManager : ICustomerManager
     {
 
         private CustomerDatabaseService _databaseService = new CustomerDatabaseService();

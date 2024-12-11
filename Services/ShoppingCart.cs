@@ -1,6 +1,6 @@
 namespace OnlineWebshop
 {
-    class ShoppingCart
+    class ShoppingCart : IShoppingCart
     {
         private CartDatabaseService _cartDatabaseService = new CartDatabaseService();
         public async Task<bool> AddShoppingCartItem(ShoppingCartItem shoppingCartItem)
@@ -51,7 +51,7 @@ namespace OnlineWebshop
 
         }
 
-        public async Task<List<ShoppingCartItem>> GetAllItemsByCustomerId(int id, CatalogusManager catalogusManager)
+        public async Task<List<ShoppingCartItem>> GetAllItemsByCustomerId(int id, ICatalogusManager catalogusManager)
         {
 
 
@@ -66,7 +66,7 @@ namespace OnlineWebshop
 
         }
 
-        public async Task<List<ShoppingCartItem>> SearchById(int Id, CatalogusManager catalogusManager)
+        public async Task<List<ShoppingCartItem>> SearchById(int Id, ICatalogusManager catalogusManager)
         {
             List<ShoppingCartItem> shoppingCartItems = await _cartDatabaseService.SearchById(Id);
 
@@ -86,7 +86,7 @@ namespace OnlineWebshop
             // get all shoppingCartItems
             List<ShoppingCartItem> items = await GetAllItemsByCustomerId(customerId, catalogusManager);
 
-            
+
             List<SelectedProductItem> orderItems = items.Select(item =>
             new SelectedProductItem(
                 null,

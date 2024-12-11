@@ -1,6 +1,6 @@
 namespace OnlineWebshop
 {
-    class ShoppingCartItem : SelectedProductItem
+    public class ShoppingCartItem : SelectedProductItem
     {
 
         public int CustomerId { get; private set; }

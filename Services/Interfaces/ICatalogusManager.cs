@@ -1,0 +1,15 @@
+namespace OnlineWebshop;
+
+public interface ICatalogusManager
+{
+
+    Task<List<Product>> GetAllProducts();
+    Task<bool> AddProduct(Product product);
+    Task<bool> RemoveProduct(Product product);
+    Task<bool> EditProduct(Product product);
+    Task<Product?> GetProductById(int Id);
+    Task<List<Product>> SearchProductBySearchterm(string searchterm);
+    void ShowProducts(List<Product> products);
+    void ShowProduct(Product product);
+
+}

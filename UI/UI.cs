@@ -1,19 +1,28 @@
-using Capstone_Project.Models;
 
 namespace OnlineWebshop
 {
     class UI
     {
 
-        //managers
-        private CategoryManager _categoryManager = new CategoryManager();
-        private CatalogusManager _catalogusManager = new CatalogusManager();
 
+        //managers
+        private readonly ICatalogusManager _catalogusManager;
+        private readonly ICategoryManager _categoryManager;
+        //private readonly ICustomerManager _customerManager;
+        private readonly IOrderManager _orderManager;
+        private readonly IShoppingCart _shoppingCart;
         User? user = null;
 
-        private ShoppingCart shoppingCart = new ShoppingCart();
-        private OrderManager _orderManager = new OrderManager();
+
         bool isRunning = true;
+
+        public UI(ICatalogusManager catalogusManager, ICategoryManager categoryManager, IOrderManager orderManager, IShoppingCart shoppingCart)
+        {
+            _catalogusManager = catalogusManager;
+            _categoryManager = categoryManager;
+            _orderManager = orderManager;
+            _shoppingCart = shoppingCart;
+        }
         private const string MainMenuCustomer = @"
         Welkom bij De Bikepacking Shop!
 
@@ -99,8 +108,8 @@ namespace OnlineWebshop
                     //show shoppingcart
                     if (user.Id != null)
                     {
-                        List<ShoppingCartItem> items = await shoppingCart.GetAllItemsByCustomerId((int)user.Id, _catalogusManager);
-                        shoppingCart.ShowShoppingCartItems(items);
+                        List<ShoppingCartItem> items = await _shoppingCart.GetAllItemsByCustomerId((int)user.Id, _catalogusManager);
+                        _shoppingCart.ShowShoppingCartItems(items);
                         await CustomerShoppingCartMenu();
                     }
 
@@ -109,6 +118,8 @@ namespace OnlineWebshop
                     //show order
                     List<Order> orders = await _orderManager.GetOrdersByCustomerId((int)user.Id);
                     _orderManager.ShowOrders(orders);
+                    // Geen menu zichtbaar
+                    await CustomerMenu();
                     break;
                 case 5:
                     //exit
@@ -158,7 +169,7 @@ namespace OnlineWebshop
 
         }
 
-        private Product EditProduct(Product product)
+        private async Task<Product> EditProduct(Product product)
         {
             Product productCopy = new Product(product.Id, product.Name, product.Description, product.Price, product.Stock, product.CategoryId, product.ImageUrl);
 
@@ -200,6 +211,8 @@ namespace OnlineWebshop
                         productCopy.Stock = stock;
                         break;
                     case 5:
+                        // Categorieen showen
+                        await _categoryManager.ShowAllCategories();
                         int categoryId = GetUserInputInt("Wat is de nieuwe categorie-ID? ");
                         productCopy.CategoryId = categoryId;
                         break;
@@ -239,7 +252,7 @@ namespace OnlineWebshop
                     if (user.Id != null)
                     {
                         ShoppingCartItem shoppingCartItem = new ShoppingCartItem(null, (int)user.Id, productId, null, numberOfItems);
-                        await shoppingCart.AddShoppingCartItem(shoppingCartItem);
+                        await _shoppingCart.AddShoppingCartItem(shoppingCartItem);
                     }
                     break;
                 case 2:
@@ -318,12 +331,17 @@ namespace OnlineWebshop
             {
                 case 1:
                     // place order 
-                    List<ShoppingCartItem> items = await shoppingCart.GetAllItemsByCustomerId((int)user.Id, _catalogusManager);
+                    List<ShoppingCartItem> items = await _shoppingCart.GetAllItemsByCustomerId((int)user.Id, _catalogusManager);
                     bool orderPlaced = await _orderManager.PlaceOrderFromShoppingCart(items, user.Id);
                     //empty shoppingcart
                     if (orderPlaced)
                     {
-                        await shoppingCart.EmptyShoppingCart(items);
+                        await _shoppingCart.EmptyShoppingCart(items);
+
+
+
+
+
 
                     }
                     break;
@@ -331,11 +349,11 @@ namespace OnlineWebshop
                     //remove product from shoppingCart
                     int choice = GetUserInputInt("Wat is de Id van het product dat je wilt verwijderen? ");
                     //get item
-                    List<ShoppingCartItem> shoppingCartItem = await shoppingCart.SearchById(choice, _catalogusManager);
+                    List<ShoppingCartItem> shoppingCartItem = await _shoppingCart.SearchById(choice, _catalogusManager);
                     Console.WriteLine($"items found: {shoppingCartItem.Count}");
                     if (shoppingCartItem.Count > 0)
                     {
-                        await shoppingCart.RemoveShoppingCartItem(shoppingCartItem[0]);
+                        await _shoppingCart.RemoveShoppingCartItem(shoppingCartItem[0]);
                         Console.WriteLine($"{shoppingCartItem[0].Product.Name} is verwijderd uit uw winkelwagen. ");
                     }
                     break;
@@ -388,7 +406,7 @@ namespace OnlineWebshop
                     Product? p2 = await _catalogusManager.GetProductById(idEdit);
                     if (p2 != null)
                     {
-                        Product editedProduct = EditProduct(p2);
+                        Product editedProduct = await EditProduct(p2);
                         await _catalogusManager.EditProduct(editedProduct);
                     }
                     break;

@@ -1,6 +1,6 @@
 namespace OnlineWebshop
 {
-    public class CatalogusManager
+    public class CatalogusManager : ICatalogusManager
     {
 
         private ProductDatabaseService _productDatabaseService = new ProductDatabaseService();
@@ -93,6 +93,7 @@ namespace OnlineWebshop
 
 
         }
+
 
 
     }

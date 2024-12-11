@@ -1,4 +1,4 @@
-using Capstone_Project.Models;
+
 
 namespace OnlineWebshop
 {
@@ -6,8 +6,8 @@ namespace OnlineWebshop
     public class Administrator : User
     {
         // ipv 
-        public Administrator() : base("admin", "Administrator") 
-        {}
+        public Administrator() : base("admin", "Administrator")
+        { }
     }
-    
+
 }

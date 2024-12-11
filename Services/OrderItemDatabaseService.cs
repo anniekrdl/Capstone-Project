@@ -35,8 +35,39 @@ namespace OnlineWebshop
 
         }
 
+        public async Task<List<OrderItem>> GetOrderItemByOrderId(int Id)
+        {
+            //order_id
+
+            List<OrderItem> orderList = new List<OrderItem>();
+            using var connection = GetConnection();
+            await connection.OpenAsync();
+
+            using var command = connection.CreateCommand();
+
+            command.CommandText = "SELECT * FROM bestelling_detail WHERE bestelling_id = @id";
+
+            command.Parameters.AddWithValue("@id", Id);
+
+
+            using var reader = await command.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                orderList.Add(new OrderItem(
+                    reader.GetInt32("detail_id"),
+                    reader.GetInt32("bestelling_id"),
+                    reader.GetInt32("product_id"),
+                    reader.GetInt32("aantal"),
+                    null
+
+                ));
+            }
+            return orderList;
+        }
+
         public async Task<OrderItem> GetOrderItemById(int Id)
         {
+            //detail_id
 
             List<OrderItem> orderList = new List<OrderItem>();
             using var connection = GetConnection();

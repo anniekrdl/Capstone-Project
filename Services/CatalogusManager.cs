@@ -3,7 +3,13 @@ namespace OnlineWebshop
     public class CatalogusManager : ICatalogusManager
     {
 
-        private ProductDatabaseService _productDatabaseService = new ProductDatabaseService();
+        private readonly ProductDatabaseService _productDatabaseService;
+
+        public CatalogusManager(ProductDatabaseService productDatabaseService)
+        {
+
+            _productDatabaseService = productDatabaseService;
+        }
 
         public async Task<List<Product>> GetAllProducts()
         {
@@ -55,44 +61,6 @@ namespace OnlineWebshop
             return products;
         }
 
-        public void ShowProducts(List<Product> products)
-        {
-            Console.WriteLine(@"
-            
-            Productoverzicht:
-
-             ID  | Productnaam         | Prijs       | Beschikbaar
-            --------------------------------------------------------");
-            //List<Product> products = await GetAllProducts();
-            foreach (Product p in products)
-            {
-                string productName = p.Name.PadRight(20);
-                string productId = p.Id.ToString().PadRight(4);
-                string productPrice = (p.Price / 100.00).ToString().PadRight(12);
-                Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {p.Stock}");
-
-            }
-
-        }
-
-        public void ShowProduct(Product product)
-        {
-
-            Console.WriteLine(@"
-            
-            Productoverzicht:
-
-             ID  | Productnaam         | Prijs       | Beschrijving
-            --------------------------------------------------------");
-            //List<Product> products = await GetAllProducts();
-
-            string productName = product.Name.PadRight(20);
-            string productId = product.Id.ToString().PadRight(4);
-            string productPrice = (product.Price / 100.00).ToString().PadRight(12);
-            Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {product.Description}");
-
-
-        }
 
 
 

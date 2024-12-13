@@ -9,7 +9,6 @@ public interface ICatalogusManager
     Task<bool> EditProduct(Product product);
     Task<Product?> GetProductById(int Id);
     Task<List<Product>> SearchProductBySearchterm(string searchterm);
-    void ShowProducts(List<Product> products);
-    void ShowProduct(Product product);
+
 
 }

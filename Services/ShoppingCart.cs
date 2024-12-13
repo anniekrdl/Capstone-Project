@@ -2,7 +2,13 @@ namespace OnlineWebshop
 {
     class ShoppingCart : IShoppingCart
     {
-        private CartDatabaseService _cartDatabaseService = new CartDatabaseService();
+        private readonly CartDatabaseService _cartDatabaseService;
+
+        public ShoppingCart(CartDatabaseService cartDatabaseService)
+        {
+
+            _cartDatabaseService = cartDatabaseService;
+        }
         public async Task<bool> AddShoppingCartItem(ShoppingCartItem shoppingCartItem)
         {
             try
@@ -28,6 +34,31 @@ namespace OnlineWebshop
             {
                 return false;
             }
+        }
+
+
+        public async Task<ShoppingCartItem?> SearchById(int Id, ICatalogusManager catalogusManager)
+        {
+            ShoppingCartItem? shoppingCartItem = await _cartDatabaseService.SearchById(Id);
+
+            if (shoppingCartItem != null)
+            {
+                // add Product
+                Product? product = await catalogusManager.GetProductById(shoppingCartItem.ProductId);
+
+                if (product != null)
+                {
+                    shoppingCartItem.setProduct(product);
+                }
+                else
+                {
+                    Console.WriteLine($"Product met ID {shoppingCartItem.ProductId} niet gevonden.");
+                }
+
+            }
+
+            return shoppingCartItem;
+
         }
 
         public async Task<bool> EmptyShoppingCart(List<ShoppingCartItem> items)
@@ -57,81 +88,25 @@ namespace OnlineWebshop
 
             List<ShoppingCartItem> shoppingCartItems = await _cartDatabaseService.GetAllShoppingCartItemsByCustomerId(id);
 
-            foreach (ShoppingCartItem item in shoppingCartItems)
-            {
-                item.Product = await catalogusManager.GetProductById(item.ProductId);
-
-            }
-            return shoppingCartItems;
-
-        }
-
-        public async Task<List<ShoppingCartItem>> SearchById(int Id, ICatalogusManager catalogusManager)
-        {
-            List<ShoppingCartItem> shoppingCartItems = await _cartDatabaseService.SearchById(Id);
 
             foreach (ShoppingCartItem item in shoppingCartItems)
             {
-                item.Product = await catalogusManager.GetProductById(item.ProductId);
-            }
 
-            return shoppingCartItems;
+                Product? p = await catalogusManager.GetProductById(item.ProductId);
 
-        }
-
-
-        public async Task<List<SelectedProductItem>> GetSelectedProductItemList(int customerId, CatalogusManager catalogusManager)
-        {
-
-            // get all shoppingCartItems
-            List<ShoppingCartItem> items = await GetAllItemsByCustomerId(customerId, catalogusManager);
-
-
-            List<SelectedProductItem> orderItems = items.Select(item =>
-            new SelectedProductItem(
-                null,
-                item.ProductId,
-                item.Product,
-                item.NumberOfItems)
-            ).ToList();
-
-            return orderItems;
-
-
-        }
-
-        public void ShowShoppingCartItems(List<ShoppingCartItem> items)
-        {
-
-            Console.WriteLine(@"
-            
-            Productoverzicht:
-
-             ID  | Productnaam         | Prijs        | Aantal      | TotaalPrijs
-            --------------------------------------------------------");
-            //List<Product> products = await GetAllProducts();
-            foreach (ShoppingCartItem p in items)
-            {
-                if (p.Product != null)
+                if (p != null)
                 {
-                    string productName = p.Product.Name.PadRight(20);
-                    string productId = p.Id.ToString().PadRight(4);
-                    string productPrice = (p.Product.Price / 100.00).ToString().PadRight(12);
-                    string numberOfItems = p.NumberOfItems.ToString().PadRight(12);
-                    string totalPrice = (p.NumberOfItems * (p.Product.Price / 100.00)).ToString().PadRight(12);
 
-
-                    Console.WriteLine($@"             {productId}| {productName}| €{productPrice}| {numberOfItems}|€{totalPrice}");
+                    item.setProduct(p);
 
                 }
 
 
-            }
 
+            }
+            return shoppingCartItems;
 
         }
-
-
 
     }
 

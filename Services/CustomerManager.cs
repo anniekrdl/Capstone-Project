@@ -3,7 +3,12 @@ namespace OnlineWebshop
     class CustomerManager : ICustomerManager
     {
 
-        private CustomerDatabaseService _databaseService = new CustomerDatabaseService();
+        private readonly CustomerDatabaseService _databaseService;
+
+        public CustomerManager(CustomerDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+        }
 
         public async Task<List<Customer>> GetCustomers()
         {

@@ -2,7 +2,7 @@ namespace OnlineWebshop;
 
 public interface ILoginManager
 {
-    Task<User?> UserLogin(LoginService loginService);
+    Task<User?> UserLogin(string UserName);
 }
 
 

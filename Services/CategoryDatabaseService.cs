@@ -3,8 +3,16 @@ using MySqlConnector;
 namespace OnlineWebshop
 {
 
-    public class CategoryDatabaseService : DatabaseService
+    public class CategoryDatabaseService
     {
+
+        private readonly IDatabaseService _databaseService;
+
+        public CategoryDatabaseService(IDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+
+        }
 
 
 
@@ -13,7 +21,7 @@ namespace OnlineWebshop
 
             List<Category> categories = new List<Category>();
 
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -43,7 +51,7 @@ namespace OnlineWebshop
 
         public async Task AddCategory(Category category)
         {
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -57,7 +65,7 @@ namespace OnlineWebshop
 
         public async Task RemoveCategory(Category category)
         {
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -77,7 +85,7 @@ namespace OnlineWebshop
 
             List<Category> categories = new List<Category>();
 
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();

@@ -4,7 +4,7 @@ using MySqlConnector;
 namespace OnlineWebshop
 {
 
-    public class DatabaseService
+    public class DatabaseService : IDatabaseService
     {
 
         private MySqlConnectionStringBuilder mySqlBuilder = new MySqlConnectionStringBuilder
@@ -17,7 +17,7 @@ namespace OnlineWebshop
         };
 
         //protected: bruikbaar in parent en child class. Private alleen in huidige (parent) class.
-        protected MySqlConnection GetConnection()
+        public MySqlConnection GetConnection()
         {
             return new MySqlConnection(mySqlBuilder.ConnectionString);
 

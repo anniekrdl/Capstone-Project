@@ -4,13 +4,20 @@ using MySqlConnector;
 namespace OnlineWebshop
 {
 
-    public class ProductDatabaseService : DatabaseService
+    public class ProductDatabaseService
     {
+
+        private readonly IDatabaseService _databaseService;
+        public ProductDatabaseService(IDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+
+        }
 
 
         public async Task<List<Product>> GetAllProducts()
         {
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
             var query = "SELECT * FROM product";
             var command = new MySqlCommand(query, connection);
@@ -40,7 +47,7 @@ namespace OnlineWebshop
 
             try
             {
-                using var connection = GetConnection();
+                using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
@@ -72,7 +79,7 @@ namespace OnlineWebshop
         {
             try
             {
-                using var connection = GetConnection();
+                using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
@@ -106,7 +113,7 @@ namespace OnlineWebshop
         {
             try
             {
-                using var connection = GetConnection();
+                using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
@@ -131,7 +138,7 @@ namespace OnlineWebshop
         public async Task<List<Product>> SearchProductById(int Id)
         {
             List<Product> products = new List<Product>();
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -165,7 +172,7 @@ namespace OnlineWebshop
         public async Task<List<Product>> SearchProductBySearchTerm(string searchTerm)
         {
             List<Product> products = new List<Product>();
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();

@@ -3,8 +3,15 @@ namespace OnlineWebshop
 
     public class CategoryManager : ICategoryManager
     {
-        private CategoryDatabaseService _categoryDatabaseService = new CategoryDatabaseService();
 
+
+        private readonly CategoryDatabaseService _categoryDatabaseService;
+
+        public CategoryManager(CategoryDatabaseService categoryDatabaseService)
+        {
+            _categoryDatabaseService = categoryDatabaseService;
+
+        }
 
         public async void AddCategory(Category category)
         {
@@ -25,29 +32,6 @@ namespace OnlineWebshop
         public async Task<List<Category>> SearchCategorie(string searchTerm)
         {
             return await _categoryDatabaseService.SearchCategory(searchTerm);
-        }
-
-        public async Task ShowAllCategories()
-        {
-            Console.WriteLine(@"
-            
-            Categorieën:
-
-             ID  | Categorienaam       | Beschrijving       
-            ------------------------------------------------");
-            List<Category> categories = await _categoryDatabaseService.GetAllCategories();
-
-            foreach (Category category in categories)
-            {
-                string name = category.Name.PadRight(20);
-                string id = category.Id.ToString().PadRight(4);
-                string description = category.Description.Length > 150 ? category.Description.Substring(0, 40) + "..." : category.Description; // if length > 40 dan substring anders hele description.
-
-                Console.WriteLine($@"
-                {id}| {name}|{description}");
-            }
-
-
         }
 
     }

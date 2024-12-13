@@ -2,9 +2,14 @@
 namespace OnlineWebshop
 {
 
-    public class LoginService()
+    public class LoginService
     {
-        CustomerDatabaseService _databaseService = new CustomerDatabaseService();
+        private readonly CustomerDatabaseService _databaseService;
+
+        public LoginService(CustomerDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+        }
 
         public async Task<User?> Login(string UserName)
         {

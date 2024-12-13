@@ -1,42 +1,63 @@
 namespace OnlineWebshop
 {
-    class CartDatabaseService : DatabaseService
+    class CartDatabaseService
     {
+        private readonly IDatabaseService _databaseService;
+        public CartDatabaseService(IDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+
+        }
         public async Task<List<ShoppingCartItem>> GetAllShoppingCartItemsByCustomerId(int Id)
         {
             var items = new List<ShoppingCartItem>();
-
-            using var connection = GetConnection();
-            await connection.OpenAsync();
-
-            using var command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM huidige_bestelling_item WHERE klant_id = @customerId";
-
-            command.Parameters.AddWithValue("@customerId", Id);
-
-            var reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                var item = new ShoppingCartItem(
-                    reader.GetInt32("huidige_bestelling_id"),
-                    reader.GetInt32("klant_id"),
-                    reader.GetInt32("product_id"),
-                    null,
-                    reader.GetInt32("aantal")
-                );
+                using var connection = _databaseService.GetConnection();
+                await connection.OpenAsync();
 
-                items.Add(item);
+                using var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM huidige_bestelling_item WHERE klant_id = @customerId";
+                command.Parameters.AddWithValue("@customerId", Id);
+
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+
+                    var item = new ShoppingCartItem(
+                        reader.GetInt32("huidige_bestelling_id"),
+                        reader.GetInt32("klant_id"),
+                        reader.GetInt32("product_id"),
+                        null,
+                        reader.GetInt32("aantal")
+                    );
+
+
+
+                    items.Add(item);
+
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Fout bij ophalen van winkelwagenitems: {ex.Message}");
 
             }
 
             return items;
+
+
+
         }
 
         public async Task<bool> AddShoppingCartItem(ShoppingCartItem shoppingCartItem)
         {
             try
             {
-                using var connection = GetConnection();
+                using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
@@ -52,9 +73,9 @@ namespace OnlineWebshop
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Item niet toegevoegd aan database");
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Fout bij toevoegen van winkelwagenitem: {ex.Message}");
                 return false;
+
 
 
             }
@@ -65,7 +86,7 @@ namespace OnlineWebshop
         {
             try
             {
-                using var connection = GetConnection();
+                using var connection = _databaseService.GetConnection();
                 await connection.OpenAsync();
 
                 using var command = connection.CreateCommand();
@@ -80,41 +101,55 @@ namespace OnlineWebshop
 
 
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Fout bij verwijderen van winkelwagenitem: {ex.Message}");
                 return false;
             }
         }
 
-        public async Task<List<ShoppingCartItem>> SearchById(int Id)
+        public async Task<ShoppingCartItem?> SearchById(int Id)
         {
-            List<ShoppingCartItem> shoppingCartItems = new List<ShoppingCartItem>();
-            var connection = GetConnection();
-            await connection.OpenAsync();
-
-            using var command = connection.CreateCommand();
-            command.CommandText = "SELECT * FROM huidige_bestelling_item WHERE huidige_bestelling_id = @Id";
-
-            command.Parameters.AddWithValue("@Id", Id);
-
-            using var reader = command.ExecuteReader();
-
-            while (reader.Read())
+            try
             {
-                ShoppingCartItem shoppingCartItem = new ShoppingCartItem(
-                    reader.GetInt32("huidige_bestelling_id"),
-                    reader.GetInt32("klant_id"),
-                    reader.GetInt32("product_id"),
-                    null,
-                    reader.GetInt32("aantal")
-                );
+                using var connection = _databaseService.GetConnection();
+                await connection.OpenAsync();
+
+                using var command = connection.CreateCommand();
+                command.CommandText = "SELECT * FROM huidige_bestelling_item WHERE huidige_bestelling_id = @Id";
+
+                command.Parameters.AddWithValue("@Id", Id);
+
+                using var reader = await command.ExecuteReaderAsync();
+
+                if (await reader.ReadAsync())
+                {
+                    return new ShoppingCartItem(
+                        reader.GetInt32("huidige_bestelling_id"),
+                        reader.GetInt32("klant_id"),
+                        reader.GetInt32("product_id"),
+                        null,
+                        reader.GetInt32("aantal")
+                    );
+
+                }
 
 
-
-                shoppingCartItems.Add(shoppingCartItem);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fout bij zoeken van winkelwagenitem: {ex.Message}");
             }
 
-            return shoppingCartItems;
+            return null;
+
+
+
+
+
+
+
+
 
         }
 

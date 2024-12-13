@@ -3,14 +3,21 @@ using MySqlConnector;
 namespace OnlineWebshop
 {
 
-    public class CustomerDatabaseService : DatabaseService
+    public class CustomerDatabaseService
     {
+
+        private readonly IDatabaseService _databaseService;
+
+        public CustomerDatabaseService(IDatabaseService databaseService)
+        {
+            _databaseService = databaseService;
+        }
 
         public async Task<List<Customer>> GetCustomers()
         {
             List<Customer> customers = new List<Customer>();
 
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -41,7 +48,7 @@ namespace OnlineWebshop
 
         public async Task AddCustomer(Customer customer)
         {
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
 
             using var command = connection.CreateCommand();
@@ -63,7 +70,7 @@ namespace OnlineWebshop
 
         public async Task RemoveCustomer(int userId)
         {
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = @"DELETE FROM klant WHERE klant_id = @klantId";
@@ -76,7 +83,7 @@ namespace OnlineWebshop
         public async Task<List<Customer>> SearchCustomer(string userName)
         {
             List<Customer> customers = new List<Customer>();
-            using var connection = GetConnection();
+            using var connection = _databaseService.GetConnection();
             await connection.OpenAsync();
             using var command = connection.CreateCommand();
             command.CommandText = @"SELECT * FROM klant WHERE gebruikersnaam = @username";

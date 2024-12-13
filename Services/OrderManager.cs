@@ -38,33 +38,11 @@ namespace OnlineWebshop
 
         }
 
-
-
-        public async Task<int> GetOrCreateOrderId(int customerId)
+        public async Task<List<OrderItem>> GetOrderItemsByOrderId(int orderId)
         {
-            List<int> foundOrders = await _orderDatabaseService.GetOrderIdByCustomerId(customerId);
 
-            if (foundOrders.Any())
-            {
-                int foundOrderId = foundOrders.First();
-
-                Order? orderFound = await GetOrderById(foundOrderId);
-                if (orderFound != null && orderFound.OrderStatus == OrderStatus.AANGEMAAKT)
-                {
-                    return foundOrderId;
-                }
-            }
-
-            //new order      
-            Order order = new Order(null, customerId, null, OrderStatus.AANGEMAAKT);
-            await _orderDatabaseService.AddOrder(order);
-
-            // find orderId
-            foundOrders = await _orderDatabaseService.GetOrderIdByCustomerId(customerId);
-            Console.WriteLine($"Orders found total: {foundOrders.Count}. Id: {foundOrders.First()}");
-
-            return foundOrders.First();
-
+            //orderItems
+            return await _orderItemDatabaseService.GetOrderItemByOrderId(orderId);
 
         }
 
@@ -85,7 +63,7 @@ namespace OnlineWebshop
 
                         Console.WriteLine($"orderId gevonden: {orderId}");
 
-                        foreach (SelectedProductItem item in items)
+                        foreach (IProductItem item in items)
                         {
                             OrderItem orderItem = new OrderItem(null, orderId, item.ProductId, item.NumberOfItems, item.Product);
 
@@ -93,10 +71,11 @@ namespace OnlineWebshop
                             //update Order status
 
                             Order? order = await GetOrderById(orderId);
-                            Console.WriteLine($"order geplaatst {order.Id}");
+
 
                             if (order != null)
                             {
+                                Console.WriteLine($"order geplaatst {order.Id}");
                                 order.UpdateOrderStatus(OrderStatus.GEPLAATST);
                                 await UpdateOrder(order);
                             }
@@ -136,6 +115,29 @@ namespace OnlineWebshop
 
         }
 
+        public async Task<bool> UpdateOrderStatus(Order order, OrderStatus orderStatus)
+        {
+            OrderStatus currentStatus = order.OrderStatus;
+            if ((currentStatus == OrderStatus.GEPLAATST && (orderStatus == OrderStatus.GEWEIGERD || orderStatus == OrderStatus.AFGEROND)) || (currentStatus == OrderStatus.GEACCEPTEERD && orderStatus == OrderStatus.AFGEROND))
+            {
+                order.UpdateOrderStatus(orderStatus);
+                await UpdateOrder(order);
+                return true;
+
+            }
+            else
+            {
+
+                return false;
+            }
+
+
+
+
+
+
+        }
+
 
         public async Task<bool> UpdateOrder(Order order)
         {
@@ -148,36 +150,6 @@ namespace OnlineWebshop
             return await _orderDatabaseService.GetOrdersByCustomerId(customerId);
         }
 
-        public async void ShowOrders(List<Order> orders)
-        {
-
-            Console.WriteLine(@"
-            Bestellingoverzicht:
-            
-            ID  | Datum         | Status
-            -----------------------------------");
-
-            foreach (Order order in orders)
-            {
-                string orderId = order.Id.ToString().PadRight(4);
-                string date = order.Date.ToString().PadRight(14);
-                string status = order.OrderStatus.ToString().PadRight(12);
-
-                //orderItems
-                List<OrderItem> orderItemsList = await _orderItemDatabaseService.GetOrderItemByOrderId(int.Parse(orderId));
-
-
-                Console.WriteLine($@"            {orderId}| {date}| {status}");
-                foreach (OrderItem orderItem in orderItemsList)
-                {
-                    //TODO product is null
-                    Console.WriteLine($"{orderItem.NumberOfItems}x {orderItem.Id}");
-                }
-
-            }
-
-
-        }
 
     }
 

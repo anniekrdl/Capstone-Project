@@ -67,7 +67,7 @@ namespace OnlineWebshop
             {
                 if (user.IsAdmin())
                 {
-                    var adminMenu = new AdministratorMenu(_catalogusManager, _shoppingCart, _orderManager, _categoryManager, user, _presenter);
+                    var adminMenu = new AdministratorMenu(_catalogusManager, _orderManager, _presenter);
 
                     if (!adminMenu.Show())
                     {

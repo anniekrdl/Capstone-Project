@@ -61,8 +61,6 @@ namespace OnlineWebshop
                     {
                         int orderId = await CreateOrderId(customerId.Value);
 
-                        Console.WriteLine($"orderId gevonden: {orderId}");
-
                         foreach (IProductItem item in items)
                         {
                             OrderItem orderItem = new OrderItem(null, orderId, item.ProductId, item.NumberOfItems, item.Product);
@@ -75,7 +73,6 @@ namespace OnlineWebshop
 
                             if (order != null)
                             {
-                                Console.WriteLine($"order geplaatst {order.Id}");
                                 order.UpdateOrderStatus(OrderStatus.GEPLAATST);
                                 await UpdateOrder(order);
                             }
@@ -118,7 +115,8 @@ namespace OnlineWebshop
         public async Task<bool> UpdateOrderStatus(Order order, OrderStatus orderStatus)
         {
             OrderStatus currentStatus = order.OrderStatus;
-            if ((currentStatus == OrderStatus.GEPLAATST && (orderStatus == OrderStatus.GEWEIGERD || orderStatus == OrderStatus.AFGEROND)) || (currentStatus == OrderStatus.GEACCEPTEERD && orderStatus == OrderStatus.AFGEROND))
+
+            if ((currentStatus == OrderStatus.GEPLAATST && (orderStatus == OrderStatus.GEWEIGERD || orderStatus == OrderStatus.GEACCEPTEERD)) || (currentStatus == OrderStatus.GEACCEPTEERD && orderStatus == OrderStatus.AFGEROND))
             {
                 order.UpdateOrderStatus(orderStatus);
                 await UpdateOrder(order);

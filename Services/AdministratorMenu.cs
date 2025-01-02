@@ -4,20 +4,16 @@ namespace OnlineWebshop;
 public class AdministratorMenu
 {
     private readonly ICatalogusManager _catalogusManager;
-    private readonly IShoppingCart _shoppingCart;
+
     private readonly IOrderManager _orderManager;
-    private readonly ICategoryManager _categoryManager;
-    private User _user;
+
     private bool _exitProgram = false;
     private readonly Presenter _presenter;
 
-    public AdministratorMenu(ICatalogusManager catalogusManager, IShoppingCart shoppingCart, IOrderManager orderManager, ICategoryManager categoryManager, User user, Presenter presenter)
+    public AdministratorMenu(ICatalogusManager catalogusManager, IOrderManager orderManager, Presenter presenter)
     {
         _catalogusManager = catalogusManager;
-        _shoppingCart = shoppingCart;
         _orderManager = orderManager;
-        _categoryManager = categoryManager;
-        _user = user;
         _presenter = presenter;
 
     }
@@ -39,11 +35,11 @@ public class AdministratorMenu
             //ACTION kan alleen met void en niet async
             (1, "Bekijk catalogus",  new Action(() => ShowCatalog().Wait())),
             (2, "Zoek naar een product",new Action(() => SearchProduct().Wait())),
-            (4, "Bestellingen bekijken", new Action(() => ShowOrders().Wait())),
+            (3, "Bestellingen bekijken", new Action(() => ShowOrders().Wait())),
             (5, "Afsluiten", Exit),
         };
 
-        MenuHelper.ShowMenu("Klantmenu", options);
+        MenuHelper.ShowMenu("AdminMenu", options);
 
         if (_exitProgram)
         {

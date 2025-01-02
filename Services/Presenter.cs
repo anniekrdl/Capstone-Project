@@ -124,7 +124,7 @@ public class Presenter
                 //TODO product is null
                 if (product != null)
                 {
-                    Console.WriteLine($@"            {orderItem.NumberOfItems,-4}x €{product.Name,-24}      {orderItem.NumberOfItems * (product.Price / 100.0),-12:F2}");
+                    Console.WriteLine($@"               {orderItem.NumberOfItems,-4}x {product.Name,-24}      €{orderItem.NumberOfItems * (product.Price / 100.0),-12:F2}");
 
                 }
 
